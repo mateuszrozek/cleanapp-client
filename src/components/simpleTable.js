@@ -65,12 +65,12 @@ export default function SimpleTable() {
                                 {printCells(janAreas)}
                             </TableRow>
                             <TableRow>
-                                <TableCell className={classes.cell}>Mateusz</TableCell>
-                                {printCells(matAreas)}
-                            </TableRow>
-                            <TableRow>
                                 <TableCell className={classes.cell}>Robert</TableCell>
                                 {printCells(robAreas)}
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className={classes.cell}>Mateusz</TableCell>
+                                {printCells(matAreas)}
                             </TableRow>
                         </TableBody>
                     </Table>
