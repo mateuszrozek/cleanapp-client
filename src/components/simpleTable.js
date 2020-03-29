@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,6 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { useFetch } from "../shared/hooks";
+
 
 const useStyles = makeStyles({
     table: {
@@ -33,108 +35,48 @@ function createHeaders(weeks) {
 }
 const headers = createHeaders(weeks)
 
-// function createJanAreas(weeks) {
-//     var result = ["Jan"];
-//     for (var i = 0; i < weeks.length; i++) {
-//         result.push(weeks[i][1]);
-//     }
-//     return result;
-// }
-// function createMateuszAreas(weeks) {
-//     var result = ["Mateusz"];
-//     for (var i = 0; i < weeks.length; i++) {
-//         result.push(weeks[i][2]);
-//     }
-//     return result;
-// }
-// function createRobertAreas(weeks) {
-//     var result = ["Robert"];
-//     for (var i = 0; i < weeks.length; i++) {
-//         result.push(weeks[i][3]);
-//     }
-//     return result;
-// }
-// const janAreas = createJanAreas(weeks);
-// const mateuszAreas = createMateuszAreas(weeks);
-// const robertAreas = createRobertAreas(weeks);
-
-
-
 export default function SimpleTable() {
     const classes = useStyles();
-    const [hasError, setErrors] = useState(false);
-    const [janAreas, setJanAreas] = useState({});
-    const [robertAreas, setRobertAreas] = useState({});
-    const [mateuszAreas, setMateuszAreas] = useState({});
 
+    const [janAreas, janLoading] = useFetch('http://192.168.100.5:8888/areas/1');
+    const [matAreas, matLoading] = useFetch('http://192.168.100.5:8888/areas/2');
+    const [robAreas, robLoading] = useFetch('http://192.168.100.5:8888/areas/3');
 
-    async function fetchJanData() {
-        const res = await fetch("localhost:8888/areas/1");
-        res
-            .json()
-            .then(res => setJanAreas(res))
-            .catch(err => setErrors(err));
-            console.log(res);
+    function printCells(areas) {
+        areas
+            .map(area => <TableCell align="right" key={area.id}>{area.name}</TableCell>);
     }
 
-    async function fetchMateuszData() {
-        const res = await fetch("localhost:8888/areas/2");
-        res
-            .json()
-            .then(res => setMateuszAreas(res))
-            .catch(err => setErrors(err));
-            console.log(res);
-    }
-
-    async function fetchRobertData() {
-        const res = await fetch("localhost:8888/areas/3");
-        res
-            .json()
-            .then(res => setRobertAreas(res))
-            .catch(err => setErrors(err));
-            console.log(res);
-    }
-
-    useEffect(() => {
-        fetchJanData();
-        fetchMateuszData();
-        fetchRobertData();
-    });
-
-
+    
     return (
         <div>
-        <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        {headers.map((header, index) => (
-                            <TableCell align="right" key={index}>{header}</TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        {janAreas.map((area, index) => (
-                            <TableCell align="right" key={index}>{area}</TableCell>
-                        ))}
-                    </TableRow>
-                    <TableRow>
-                        {mateuszAreas.map((area, index) => (
-                            <TableCell align="right" key={index}>{area}</TableCell>
-                        ))}
-                    </TableRow>
-                    <TableRow>
-                        {robertAreas.map((area, index) => (
-                            <TableCell align="right" key={index}>{area}</TableCell>
-                        ))}
-                    </TableRow>
-                </TableBody>
-            </Table>
-        </TableContainer>
-    
-            <span>Has error: {JSON.stringify(hasError)}</span>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            {headers.map((header, index) => (
+                                <TableCell align="right" key={index}>{header}</TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow>
+                            {printCells(janAreas)}
+                        </TableRow>
+                        <TableRow>
+                            {printCells(matAreas)}
+                        </TableRow>
+                        <TableRow>
+                            {printCells(robAreas)}
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <span>Jan error: {JSON.stringify(janLoading)}</span>
+            <span>Mat error: {JSON.stringify(matLoading)}</span>
+            <span>Rob error: {JSON.stringify(robLoading)}</span>
         </div>
 
     );
