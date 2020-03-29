@@ -19,12 +19,10 @@ const useStyles = makeStyles({
     }
 });
 
-const headers = ['Zadanie', 'Częstotliwość', 'Status'];
-
-export default function AreaTable() {
+export default function AreaTable({ clickedAreaId }) {
     const classes = useStyles();
 
-    const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/3');
+    const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + clickedAreaId + '');
 
     function printRows(activities) {
         return activities
@@ -35,8 +33,8 @@ export default function AreaTable() {
         return (
             <TableRow>
                 <TableCell align="left" key={activity.id}>{activity.name}</TableCell>
-                <TableCell align="center" key={activity.id}>{activity.frequency}</TableCell>
-                <TableCell align="center" key={activity.id} style={{ background: setColorByStatus(activity.activityStatus) }}>{activity.activityStatus}</TableCell>
+                <TableCell align="center" key={activity.id}>{translateFrequency(activity.frequency)}</TableCell>
+                <TableCell align="center" key={activity.id} style={{ background: setColorByStatus(activity.activityStatus) }}>{transalteActivityStatus(activity.activityStatus)}</TableCell>
             </TableRow>
         );
     }
@@ -52,8 +50,26 @@ export default function AreaTable() {
         }
     }
 
-    function renderChecklist(id) {
+    function translateFrequency(frequency) {
+        switch (frequency) {
+            case "ODD":
+                return 'tydz. nieparzysty';
+            case "EVEN":
+                return 'tydz. parzysty';
+            default:
+                return 'zawsze';
+        }
+    }
 
+    function transalteActivityStatus(activityStatus) {
+        switch (activityStatus) {
+            case "READY_TO_CHECK":
+                return 'do sprawdzenia';
+            case "CHECKED":
+                return 'zrobione';
+            default:
+                return;
+        }
     }
 
     if (activities.length > 0) {

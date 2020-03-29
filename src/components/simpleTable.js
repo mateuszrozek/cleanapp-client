@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 
 const weeks = ['CW12', 'CW15', 'CW18', 'CW21', 'CW24', 'CW27', 'CW30', 'CW33', 'CW36', 'CW39', 'CW42', 'CW45', 'CW48'];
 
-export default function SimpleTable() {
+export default function SimpleTable({ onChildClick  }) {
     const classes = useStyles();
 
     const [janAreas, janLoading] = useFetch('http://192.168.100.5:8888/areas/1');
@@ -30,7 +30,11 @@ export default function SimpleTable() {
 
     function printCells(areas) {
         return areas
-            .map(area => (<TableCell align="center" key={area.id} style={{ background: setColorByStatus(area.areaStatus) }}>{area.name}</TableCell>));
+            .map(area => (<TableCell align="center" key={area.id} style={{ background: setColorByStatus(area.areaStatus) }} onClick={() => handleClick(area.id)}>{area.name}</TableCell>));
+    }
+
+    function handleClick(id) {
+        onChildClick(id);        
     }
 
     function setColorByStatus(status) {
@@ -45,6 +49,8 @@ export default function SimpleTable() {
                 return;
         }
     }
+
+
 
     if (janAreas.length > 0) {
         return (
