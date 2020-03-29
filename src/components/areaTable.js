@@ -21,10 +21,10 @@ const useStyles = makeStyles({
 
 const headers = ['Zadanie', 'Częstotliwość', 'Status'];
 
-export default function AreaTable(areaId) {
+export default function AreaTable() {
     const classes = useStyles();
 
-    const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + { areaId });
+    const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/3');
 
     function printRows(activities) {
         return activities
@@ -34,7 +34,7 @@ export default function AreaTable(areaId) {
     function printCells(activity) {
         return (
             <TableRow>
-                <TableCell align="center" key={activity.id}>{activity.name}</TableCell>
+                <TableCell align="left" key={activity.id}>{activity.name}</TableCell>
                 <TableCell align="center" key={activity.id}>{activity.frequency}</TableCell>
                 <TableCell align="center" key={activity.id} style={{ background: setColorByStatus(activity.activityStatus) }}>{activity.activityStatus}</TableCell>
             </TableRow>
@@ -63,10 +63,9 @@ export default function AreaTable(areaId) {
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell></TableCell>
-                                {headers.map((header, index) => (
-                                    <TableCell className={classes.cell} align="center" key={index}>{header}</TableCell>
-                                ))}
+                                <TableCell className={classes.cell} align="left">Zadanie</TableCell>
+                                <TableCell className={classes.cell} align="center">Częstotliwość</TableCell>
+                                <TableCell className={classes.cell} align="center" >Status</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

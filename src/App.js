@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <div className="TitleBox"><Title>CleanApp</Title></div>
       <div className="WeeksTable"><SimpleTable/></div>
-      <div className="AreaTable"><AreaTable areaId={1}/></div>
+      <div className="AreasTable"><AreaTable/></div>
     </div>
   );
 }
