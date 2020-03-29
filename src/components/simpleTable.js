@@ -43,41 +43,51 @@ export default function SimpleTable() {
     const [robAreas, robLoading] = useFetch('http://192.168.100.5:8888/areas/3');
 
     function printCells(areas) {
+        console.log(areas);
         areas
             .map(area => <TableCell align="right" key={area.id}>{area.name}</TableCell>);
     }
 
-    
-    return (
-        <div>
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            {headers.map((header, index) => (
-                                <TableCell align="right" key={index}>{header}</TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow>
-                            {printCells(janAreas)}
-                        </TableRow>
-                        <TableRow>
-                            {printCells(matAreas)}
-                        </TableRow>
-                        <TableRow>
-                            {printCells(robAreas)}
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
+    if (janAreas.length > 0) {
+        return (
+            <div>
+                <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                {headers.map((header, index) => (
+                                    <TableCell align="right" key={index}>{header}</TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                {printCells(janAreas)}
+                            </TableRow>
+                            <TableRow>
+                                {printCells(matAreas)}
+                            </TableRow>
+                            <TableRow>
+                                {printCells(robAreas)}
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
 
-            <span>Jan error: {JSON.stringify(janLoading)}</span>
-            <span>Mat error: {JSON.stringify(matLoading)}</span>
-            <span>Rob error: {JSON.stringify(robLoading)}</span>
-        </div>
+        );
+    }
+    else {
+        return (
+            <div>
+                <span>Jan error: {JSON.stringify(janLoading)}</span>
+                <br />
+                <span>Mat error: {JSON.stringify(matLoading)}</span>
+                <br />
+                <span>Rob error: {JSON.stringify(robLoading)}</span>
+            </div>
+        );
+    }
 
-    );
 }
