@@ -82,11 +82,11 @@ export default function SimpleTable() {
     else {
         return (
             <div>
-                <span>Jan error: {JSON.stringify(janLoading)}</span>
+                <span>Jan errors: {JSON.stringify(janLoading)}</span>
                 <br />
-                <span>Mat error: {JSON.stringify(matLoading)}</span>
+                <span>Mat errors: {JSON.stringify(matLoading)}</span>
                 <br />
-                <span>Rob error: {JSON.stringify(robLoading)}</span>
+                <span>Rob errors: {JSON.stringify(robLoading)}</span>
             </div>
         );
     }
