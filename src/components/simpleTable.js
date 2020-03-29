@@ -14,38 +14,36 @@ const useStyles = makeStyles({
     table: {
         minWidth: 650,
     },
+    cell: {
+        fontWeight: 550,
+    }
 });
 
-function createWeek(name, jan, mat, rob) {
-    return [name, jan, mat, rob];
-}
-const weeks = [
-    createWeek('CW12', 'KUC', 'ŁAZ', 'KOR'),
-    createWeek('CW15', 'KOR', 'KUC', 'ŁAZ'),
-    createWeek('CW18', 'ŁAZ', 'KOR', 'KUC'),
-    createWeek('CW21', 'KUC', 'ŁAZ', 'KOR'),
-];
-
-function createHeaders(weeks) {
-    var result = [];
-    for (var i = 0; i < weeks.length; i++) {
-        result.push(weeks[i][0]);
-    }
-    return result;
-}
-const headers = createHeaders(weeks)
+const weeks = ['CW12', 'CW15', 'CW18', 'CW21', 'CW24', 'CW27', 'CW30', 'CW33', 'CW36', 'CW39', 'CW42', 'CW45', 'CW48'];
 
 export default function SimpleTable() {
     const classes = useStyles();
 
     const [janAreas, janLoading] = useFetch('http://192.168.100.5:8888/areas/1');
-    const [matAreas, matLoading] = useFetch('http://192.168.100.5:8888/areas/2');
-    const [robAreas, robLoading] = useFetch('http://192.168.100.5:8888/areas/3');
+    const [robAreas, robLoading] = useFetch('http://192.168.100.5:8888/areas/2');
+    const [matAreas, matLoading] = useFetch('http://192.168.100.5:8888/areas/3');
 
     function printCells(areas) {
-        console.log(areas);
-        areas
-            .map(area => <TableCell align="right" key={area.id}>{area.name}</TableCell>);
+        return areas
+            .map(area => (<TableCell align="center" key={area.id} style={{ background: setColorByStatus(area.areaStatus) }}>{area.name}</TableCell>));
+    }
+
+    function setColorByStatus(status) {
+        switch (status) {
+            case "DELAYED":
+                return 'lightcoral';
+            case "DONE":
+                return 'lightgreen';
+            case "PENDING":
+                return 'lemonchiffon';
+            default:
+                return;
+        }
     }
 
     if (janAreas.length > 0) {
@@ -56,19 +54,22 @@ export default function SimpleTable() {
                         <TableHead>
                             <TableRow>
                                 <TableCell></TableCell>
-                                {headers.map((header, index) => (
-                                    <TableCell align="right" key={index}>{header}</TableCell>
+                                {weeks.map((week, index) => (
+                                    <TableCell className={classes.cell} align="center" key={index}>{week}</TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
+                                <TableCell className={classes.cell}>Jan</TableCell>
                                 {printCells(janAreas)}
                             </TableRow>
                             <TableRow>
+                                <TableCell className={classes.cell}>Mateusz</TableCell>
                                 {printCells(matAreas)}
                             </TableRow>
                             <TableRow>
+                                <TableCell className={classes.cell}>Robert</TableCell>
                                 {printCells(robAreas)}
                             </TableRow>
                         </TableBody>
