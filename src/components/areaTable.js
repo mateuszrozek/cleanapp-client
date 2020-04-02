@@ -61,29 +61,53 @@ export default function AreaTable({ clickedAreaId }) {
     //     return result;
     // }
 
-    function printRows() {
-        // const [activities, activitiesLoading] = fetchData();
-        // const activities = fetchData();
+    // function printRows() {
+    //     // const [activities, activitiesLoading] = fetchData();
+    //     // const activities = fetchData();
 
-        // async function fetchData() {
-        //     const result = await axios(
-        //         `http://192.168.100.5:8888/activities/${clickedAreaId}`,
-        //     );
-        //     return result;
-        // }
+    //     // async function fetchData() {
+    //     //     const result = await axios(
+    //     //         `http://192.168.100.5:8888/activities/${clickedAreaId}`,
+    //     //     );
+    //     //     return result;
+    //     // }
+
+    //     const result = async () => {
+    //         let res = await axios.get(`http://192.168.100.5:8888/activities/${clickedAreaId}`);
+    //         return res.data;
+    //     };
+
+    //     console.log(result());
+
+
+
+    //     return activities
+    //         .map(activity => printCells(activity));
+    // }
+
+    function printRows() {
+        let activities = null;
 
         const result = async () => {
-            let res = await axios.get(`http://192.168.100.5:8888/activities/${clickedAreaId}`);
-            return res.data;
+            await axios.get(`http://192.168.100.16:8888/activities/${clickedAreaId}`)
+                .then(res => {
+                    activities = res.data;
+                    printRows2(activities);
+
+                });
         };
-
-        console.log(result());
-        
-
-
-        return activities
-            .map(activity => printCells(activity));
+        result();
     }
+
+    function printRows2(activities) {
+        console.log(activities);
+        return <TableRow>
+            <TableCell>XD</TableCell>
+        </TableRow>
+        // return activities
+        //     .map(activity => printCells(activity))
+    }
+
 
     function printCells(activity) {
         return (
@@ -128,29 +152,31 @@ export default function AreaTable({ clickedAreaId }) {
         }
     }
 
-    // if (activities.length > 0) {
-    return (
-        <div>
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell className={classes.cell} align="left">Zadanie</TableCell>
-                            <TableCell className={classes.cell} align="center">Częstotliwość</TableCell>
-                            <TableCell className={classes.cell} align="center" >Status</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {printRows()}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+    if (clickedAreaId != 0) {
+        return (
             <div>
-                {/* <span>Activity errors: {JSON.stringify(activitiesLoading)}</span> */}
+                <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.cell} align="left">Zadanie</TableCell>
+                                <TableCell className={classes.cell} align="center">Częstotliwość</TableCell>
+                                <TableCell className={classes.cell} align="center" >Status</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {printRows()}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <div>
+                    {/* <span>Activity errors: {JSON.stringify(activitiesLoading)}</span> */}
+                </div>
             </div>
-        </div>
 
-    );
+        );
+    }
+    else return null;
     // }
     // else {
     //     return (
