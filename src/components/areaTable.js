@@ -54,16 +54,31 @@ export default function AreaTable({ clickedAreaId }) {
 
     // const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + areaId + '');
 
-    async function fetchData() {
-        const result = await axios(
-            ` http://192.168.100.5:8888/activities/${clickedAreaId}`,
-        );
-        return result;
-    }
+    // async function fetchData() {
+    //     const result = await axios(
+    //         ` http://192.168.100.5:8888/activities/${clickedAreaId}`,
+    //     );
+    //     return result;
+    // }
 
     function printRows() {
         // const [activities, activitiesLoading] = fetchData();
-        const activities = fetchData();
+        // const activities = fetchData();
+
+        // async function fetchData() {
+        //     const result = await axios(
+        //         `http://192.168.100.5:8888/activities/${clickedAreaId}`,
+        //     );
+        //     return result;
+        // }
+
+        const result = async () => {
+            let res = await axios.get(`http://192.168.100.5:8888/activities/${clickedAreaId}`);
+            return res.data;
+        };
+
+        console.log(result());
+        
 
 
         return activities
@@ -114,28 +129,28 @@ export default function AreaTable({ clickedAreaId }) {
     }
 
     // if (activities.length > 0) {
-        return (
+    return (
+        <div>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className={classes.cell} align="left">Zadanie</TableCell>
+                            <TableCell className={classes.cell} align="center">Częstotliwość</TableCell>
+                            <TableCell className={classes.cell} align="center" >Status</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {printRows()}
+                    </TableBody>
+                </Table>
+            </TableContainer>
             <div>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className={classes.cell} align="left">Zadanie</TableCell>
-                                <TableCell className={classes.cell} align="center">Częstotliwość</TableCell>
-                                <TableCell className={classes.cell} align="center" >Status</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {printRows()}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <div>
                 {/* <span>Activity errors: {JSON.stringify(activitiesLoading)}</span> */}
             </div>
-            </div>
+        </div>
 
-        );
+    );
     // }
     // else {
     //     return (
