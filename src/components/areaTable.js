@@ -22,8 +22,8 @@ const useStyles = makeStyles({
 
 export default function AreaTable({ clickedAreaId }) {
     const classes = useStyles();
-    const [activities, setActivities] = useState(0);
-    const [loading, setLoading] = useState(0);
+    // const [activities, setActivities] = useState(0);
+    // const [loading, setLoading] = useState(0);
 
     // useEffect(async () => {
     //     const result = await axios(
@@ -33,15 +33,15 @@ export default function AreaTable({ clickedAreaId }) {
     // });
 
 
-    useEffect(() => {
-        async function fetchData() {
-            const result = await axios(
-                'http://192.168.100.5:8888/activities/' + clickedAreaId + '',
-            );
-            setActivities(result.data);
-        }
-        fetchData();
-    }, [])
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const result = await axios(
+    //             'http://192.168.100.16:8888/activities/' + clickedAreaId + '',
+    //         );
+    //         setActivities(result.data);
+    //     }
+    //     fetchData();
+    // }, [])
 
 
     // useEffect(() => {
@@ -54,9 +54,20 @@ export default function AreaTable({ clickedAreaId }) {
 
     // const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + areaId + '');
 
-    function printRows(activities) {
+    async function fetchData() {
+        const result = await axios(
+            ` http://192.168.100.5:8888/activities/${clickedAreaId}`,
+        );
+        return result;
+    }
+
+    function printRows() {
+        // const [activities, activitiesLoading] = fetchData();
+        const activities = fetchData();
+
+
         return activities
-            .map(activity => printCells(activity))
+            .map(activity => printCells(activity));
     }
 
     function printCells(activity) {
@@ -102,7 +113,7 @@ export default function AreaTable({ clickedAreaId }) {
         }
     }
 
-    if (activities.length > 0) {
+    // if (activities.length > 0) {
         return (
             <div>
                 <TableContainer component={Paper}>
@@ -115,20 +126,21 @@ export default function AreaTable({ clickedAreaId }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {printRows(activities)}
+                            {printRows()}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div>
+                {/* <span>Activity errors: {JSON.stringify(activitiesLoading)}</span> */}
+            </div>
             </div>
 
         );
-    }
-    else {
-        return (
-            <div>
-                <span>Activity errors: {JSON.stringify(loading)}</span>
-            </div>
-        );
-    }
+    // }
+    // else {
+    //     return (
+
+    //     );
+    // }
 
 }

@@ -24,9 +24,9 @@ const weeks = ['CW12', 'CW15', 'CW18', 'CW21', 'CW24', 'CW27', 'CW30', 'CW33', '
 export default function SimpleTable({ onChildClick  }) {
     const classes = useStyles();
 
-    const [janAreas, janLoading] = useFetch('http://192.168.100.5:8888/areas/1');
-    const [robAreas, robLoading] = useFetch('http://192.168.100.5:8888/areas/2');
-    const [matAreas, matLoading] = useFetch('http://192.168.100.5:8888/areas/3');
+    const [janAreas, janLoading] = useFetch('http://192.168.100.16:8888/areas/1');
+    const [robAreas, robLoading] = useFetch('http://192.168.100.16:8888/areas/2');
+    const [matAreas, matLoading] = useFetch('http://192.168.100.16:8888/areas/3');
 
     function printCells(areas) {
         return areas
