@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useFetch } from "../shared/hooks";
+import axios from 'axios';
 
 
 const useStyles = makeStyles({
@@ -21,8 +22,37 @@ const useStyles = makeStyles({
 
 export default function AreaTable({ clickedAreaId }) {
     const classes = useStyles();
+    const [activities, setActivities] = useState(0);
+    const [loading, setLoading] = useState(0);
 
-    const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + clickedAreaId + '');
+    // useEffect(async () => {
+    //     const result = await axios(
+    //         'http://192.168.100.5:8888/activities/' + clickedAreaId + '',
+    //     );
+    //     setActivities(result.data);
+    // });
+
+
+    useEffect(() => {
+        async function fetchData() {
+            const result = await axios(
+                'http://192.168.100.5:8888/activities/' + clickedAreaId + '',
+            );
+            setActivities(result.data);
+        }
+        fetchData();
+    }, [])
+
+
+    // useEffect(() => {
+    //     const [act, actLoading] = useFetch('http://192.168.100.5:8888/activities/' + clickedAreaId + '');
+    //     setActivities(act);
+    //     setLoading(actLoading);
+
+
+    // });
+
+    // const [activities, activitiesLoading] = useFetch('http://192.168.100.5:8888/activities/' + areaId + '');
 
     function printRows(activities) {
         return activities
@@ -96,7 +126,7 @@ export default function AreaTable({ clickedAreaId }) {
     else {
         return (
             <div>
-                <span>Activity errors: {JSON.stringify(activitiesLoading)}</span>
+                <span>Activity errors: {JSON.stringify(loading)}</span>
             </div>
         );
     }
