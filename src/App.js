@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import SimpleTable from './components/simpleTable';
-import AreaTable from './components/areaTable';
+import WeekTable from './components/weekTable';
 import Title from './components/title';
 
-function App() {
+export default class App extends React.Component {
 
-  const [areaId, setAreaId] = useState(0);
-
-  function handleChildClick(dataFromChild) {
-    setAreaId(dataFromChild);
-    console.log(areaId);
+  render() {
+    return (
+      <div className="App">
+        <div className="TitleBox"><Title/></div>
+        <div className="WeekTable"><WeekTable /></div>
+      </div>
+    );
   }
-
-  return (
-    <div className="App">
-      <div className="TitleBox"><Title>CleanApp</Title></div>
-      <div className="WeeksTable"><SimpleTable onChildClick={handleChildClick} /></div>
-      <div className="AreasTable"><AreaTable clickedAreaId={areaId} /></div>
-    </div>
-  );
 }
-
-export default App;

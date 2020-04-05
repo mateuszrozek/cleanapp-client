@@ -1,0 +1,10 @@
+.tableContainer{
+    margin-bottom: 30px !important;
+}
+.weekTable {
+    width: 70% !important;
+    margin: auto !important;
+}
+.weekCell {
+    font-weight: 550 !important;
+}
