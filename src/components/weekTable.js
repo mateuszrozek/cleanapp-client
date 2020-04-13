@@ -10,7 +10,6 @@ import './weekTable.css';
 import ActivityTable from './activityTable';
 import { BASE_URL } from '../shared/baseUrl';
 
-
 const weeks = ['CW12', 'CW15', 'CW18', 'CW21', 'CW24', 'CW27', 'CW30', 'CW33', 'CW36', 'CW39', 'CW42', 'CW45', 'CW48'];
 
 export default class WeekTable extends React.Component {
@@ -103,7 +102,6 @@ export default class WeekTable extends React.Component {
     }
 
     render() {
-
         return (
             <div>
                 <TableContainer component={Paper} className="tableContainer">
