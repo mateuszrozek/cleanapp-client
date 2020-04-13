@@ -9,7 +9,6 @@ import Paper from '@material-ui/core/Paper';
 import './activityTable.css'
 import { BASE_URL } from '../shared/baseUrl';
 
-
 export default class ActivityTable extends React.Component {
 
     constructor(props) {
@@ -18,8 +17,6 @@ export default class ActivityTable extends React.Component {
         this.state = {
             activities: []
         };
-        // this.props.myCallback = this.props.myCallback.bind(this);
-        // console.log('props.areaId in constructor: ' + this.props.areaId);
     }
 
     printRows() {
@@ -43,16 +40,13 @@ export default class ActivityTable extends React.Component {
 
     handleClick(id) {
         let url = `${BASE_URL}/activitiesIncr/${id}`;
-        // console.log(url);
         fetch(url)
             .then(res => {
-                // console.log('success: ' + res);
                 this.setState({ activityUpdated: true });
                 return res;
             })
             .catch(err => console.log(err));
         this.props.callbackFromParent();
-
     }
 
     setColorByStatus(status) {
@@ -106,11 +100,9 @@ export default class ActivityTable extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.areaId !== this.props.areaId) {
             this.fetchData();
-            // console.log('data fetched props')
         }
         if (prevState.activityUpdated !== this.state.activityUpdated) {
             this.fetchData();
-            // console.log('data fetched state')
         }
     }
 
@@ -123,12 +115,10 @@ export default class ActivityTable extends React.Component {
                     this.setState({ activities: data });
                     this.setState({ activityUpdated: false });
                 });
-            // console.log(`fetched Url: ${url}`);
         }
     }
 
     render() {
-
         if (this.state.activities.length > 0) {
             return (
                 <div>
@@ -152,6 +142,5 @@ export default class ActivityTable extends React.Component {
             )
         }
         else return <span>Click area for list of activities</span>
-
     }
 }
