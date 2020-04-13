@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import './weekTable.css';
 import ActivityTable from './activityTable';
+import { BASE_URL } from '../shared/baseUrl';
 
 
 const weeks = ['CW12', 'CW15', 'CW18', 'CW21', 'CW24', 'CW27', 'CW30', 'CW33', 'CW36', 'CW39', 'CW42', 'CW45', 'CW48'];
@@ -24,26 +25,43 @@ export default class WeekTable extends React.Component {
             clickedAreaId: null,
             clickedAreaName: null,
             clickedAreaUser: null,
-            clickedAreaWeek: null
+            clickedAreaWeek: null,
+
+            activityUpdated: false
         };
 
         this.handleClick = this.handleClick.bind(this);
         this.setColorByStatus = this.setColorByStatus.bind(this);
         this.printCells = this.printCells.bind(this);
+        this.fetchData = this.fetchData.bind(this);
+        this.myCallback = this.myCallback.bind(this);
+
     }
 
-    componentDidMount() {
-        fetch('http://192.168.100.16:8888/areas/1')
+    fetchData() {
+        fetch(`${BASE_URL}/areas/1`)
             .then(response => response.json())
             .then(data => this.setState({ janAreas: data }));
 
-        fetch('http://192.168.100.16:8888/areas/2')
+        fetch(`${BASE_URL}/areas/2`)
             .then(response => response.json())
             .then(data => this.setState({ robAreas: data }));
 
-        fetch('http://192.168.100.16:8888/areas/3')
+        fetch(`${BASE_URL}/areas/3`)
             .then(response => response.json())
             .then(data => this.setState({ matAreas: data }));
+
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.activityUpdated !== this.state.activityUpdated) {
+            this.fetchData();
+            console.log('data fetched nie?');
+        }
     }
 
     printCells(areas) {
@@ -60,6 +78,9 @@ export default class WeekTable extends React.Component {
             ));
     }
 
+    myCallback = () => {
+        this.setState({ activityUpdated: !this.state.activityUpdated });
+    }
 
     handleClick(area) {
         this.setState({ clickedAreaId: area.id });
@@ -116,6 +137,7 @@ export default class WeekTable extends React.Component {
                     areaName={this.state.clickedAreaName}
                     areaUser={this.state.clickedAreaUser}
                     areaWeek={this.state.clickedAreaWeek}
+                    callbackFromParent={this.myCallback}
                 />
             </div>
         )

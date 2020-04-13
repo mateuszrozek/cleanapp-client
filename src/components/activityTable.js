@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import './activityTable.css'
+import { BASE_URL } from '../shared/baseUrl';
 
 
 export default class ActivityTable extends React.Component {
@@ -15,11 +16,10 @@ export default class ActivityTable extends React.Component {
         super(props);
 
         this.state = {
-            activities: [],
-            activityUpdated: false
+            activities: []
         };
-
-        console.log('props.areaId in constructor: ' + this.props.areaId);
+        // this.props.myCallback = this.props.myCallback.bind(this);
+        // console.log('props.areaId in constructor: ' + this.props.areaId);
     }
 
     printRows() {
@@ -35,21 +35,24 @@ export default class ActivityTable extends React.Component {
                             onClick={() => this.handleClick(activity.id)}
                         >
                             {this.translateActivityStatus(activity.activityStatus)}
-                        </TableCell>
-                    </TableRow>
+                        </TableCell >
+                    </TableRow >
                 );
             });
     }
 
     handleClick(id) {
-        let url = `http://192.168.100.16:8888/activitiesIncr/${id}`;
-        console.log(url);
+        let url = `${BASE_URL}/activitiesIncr/${id}`;
+        // console.log(url);
         fetch(url)
             .then(res => {
-                console.log('success: ' + res);
+                // console.log('success: ' + res);
                 this.setState({ activityUpdated: true });
-                return res;})
+                return res;
+            })
             .catch(err => console.log(err));
+        this.props.callbackFromParent();
+
     }
 
     setColorByStatus(status) {
@@ -77,15 +80,15 @@ export default class ActivityTable extends React.Component {
     translateActivityStatus(activityStatus) {
         switch (activityStatus) {
             case "READY_TO_CHECK":
-                return 'ZROBIONE';
+                return;
             case "CHECKED":
-                return 'DO SPRAW.';
+                return;
             default:
                 return;
         }
     }
 
-    translateArea(name){
+    translateArea(name) {
         switch (name) {
             case "KCH":
                 return 'KUCHNIA';
@@ -103,24 +106,24 @@ export default class ActivityTable extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.areaId !== this.props.areaId) {
             this.fetchData();
-            console.log('data fetched props')
+            // console.log('data fetched props')
         }
         if (prevState.activityUpdated !== this.state.activityUpdated) {
             this.fetchData();
-            console.log('data fetched state')
+            // console.log('data fetched state')
         }
     }
 
     fetchData() {
         if (this.props.areaId !== null) {
-            let url = `http://192.168.100.16:8888/activities/${this.props.areaId}`
+            let url = `${BASE_URL}/activities/${this.props.areaId}`
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     this.setState({ activities: data });
                     this.setState({ activityUpdated: false });
                 });
-            console.log(`fetched Url: ${url}`);
+            // console.log(`fetched Url: ${url}`);
         }
     }
 

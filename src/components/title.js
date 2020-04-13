@@ -1,5 +1,6 @@
 import React from 'react'
 import './title.css';
+import {BASE_URL} from '../shared/baseUrl';
 
 const TITLE = 'CleanApp'
 
@@ -15,7 +16,7 @@ export default class Title extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.100.16:8888/week')
+        fetch(`${BASE_URL}/week`)
             .then(response => response.json())
             .then(data => this.setState({ week: data }));
     }
@@ -25,7 +26,7 @@ export default class Title extends React.Component {
             return (
                 <div className="container">
                     <h1 className="title">
-                        {TITLE + " - CW" + this.state.week}
+                        {`${TITLE} - CW${this.state.week}`}
                     </h1>
                 </div>
             )
