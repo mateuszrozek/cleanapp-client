@@ -11,7 +11,6 @@ function useFetch(url) {
         setData(json);
         setLoading(false);
         console.log(url);
-        
     }
 
     useEffect(() => {

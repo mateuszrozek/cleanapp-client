@@ -6,7 +6,6 @@ export const useFetchNew = (apiRoot) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
   
-    // Just pass the variables that changes in each new fetch requisition
     const fetchData = async (apiPath) => {
         setIsError(false);
         setIsLoading(true);
