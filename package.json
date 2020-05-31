@@ -1,6 +1,10 @@
 {
   "name": "cleanapp-client",
   "version": "0.1.0",
+  "engines": {
+    "node": "13.6.x",
+    "npm": "6.13.x"
+  },
   "private": true,
   "proxy": "http://localhost:8888",
   "dependencies": {
